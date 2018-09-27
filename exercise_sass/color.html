@@ -1,0 +1,57 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+	.blue{
+		width: 100px;
+		height: 100px;
+		background-color: cyan;
+	}
+	.red{
+		color: #A020f0;
+		width: 100px;
+		height: 100px;
+		/* box-shadow: 10px 10px 10px 5px #888888 inset;  */
+	}
+
+</style>
+<body>
+	<div class="blue">1</div>
+	<div class="blue red">2</div>
+	<section>
+		<table>
+			<tr>
+				<td>A1</td>
+				<td>A2</td>
+				<td>A3</td>
+			</tr>
+			<tr>
+				<td>B1</td>
+				<td>B2</td>
+				<td>B3</td>
+			</tr>
+			<tr>
+				<td>C1</td>
+				<td>C2</td>
+				<td>C3</td>
+			</tr>
+		</table>
+		<button id="findHover" type="button">Find: 'td:hover'</button>
+		<div id="hoverResult"></div>
+	<script>
+		window.onload = function () {
+			/* body... */
+			document.addEventListener("mouseover", function () {
+				/* body... */
+				var hovered = document.querySelector("td:hover");
+				if(hovered){
+					document.getElementById("hoverResult").innerHTML = hovered.innerHTML;
+				}
+			})
+		}
+		
+	</script>
+</body>
+</html>

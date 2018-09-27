@@ -1,0 +1,52 @@
+nav {
+  width: 300px;
+  color: #F60; }
+
+/* .wp{
+	 position:relative;
+	width: $width;
+	height: $height;
+	border:1px solid red;
+}
+.box{
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-50px;
+	margin-top:-50px;
+
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin:auto;
+
+	top:calc(50% - 50px);
+	left:calc(50% - 50px);
+
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	background: green;
+}
+.box.size{
+	width:$width/3;
+	height:$height/3;
+}; */
+.wp {
+  line-height: 300px;
+  text-align: center;
+  font-size: 0px;
+  width: 300px;
+  height: 300px;
+  border: 1px solid red; }
+
+.box {
+  font-size: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: initial;
+  text-align: left;
+  background: green; }
+
+/*# sourceMappingURL=css.css.map */
