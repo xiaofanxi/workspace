@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script>
+	window.onload = function () {
+		/* body... */
+		var person = {};
+		Object.defineProperty(person, 'name', {
+			writable : false,
+			value: "Black bear"
+		});
+		person.name = "Hero";
+		console.log(person.name);
+	}
+	
+</script>
+</body>
+</html>
