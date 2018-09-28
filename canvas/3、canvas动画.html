@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>2、canvas动画</title>
+	<meta name="keywords" content=""/>
+	<meta name="description" content=""/>
+	<style type="text/css">
+		canvas {
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="500" height="400"></canvas>
+
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas'),
+			c = canvas.getContext('2d');
+
+		var ball = {
+			x: 100,
+			y: 100,
+			r: 25,
+			vx: 5,
+			vy: 2,
+			color: 'red',
+			draw: function(){
+				c.beginPath();
+				c.arc(this.x,this.y,this.r,0,Math.PI*2,true);
+				c.closePath();
+				c.fillStyle = this.color;
+				c.fill();
+			}
+		}
+
+		function play(){
+			// c.clearRect(0,0,500,400);
+			c.fillStyle = 'rgba(255,255,255,.1)';
+			c.fillRect(0,0,500,400);
+			ball.draw();
+			ball.x += ball.vx;
+			ball.y += ball.vy;
+			if (ball.x+ball.vx>500 || ball.x+ball.vx<0) {
+				ball.vx *= -1;
+			}
+			if (ball.y+ball.vy>400 || ball.y+ball.vy<0) {
+				ball.vy *= -1;
+			}
+			window.requestAnimationFrame(play);
+		}
+
+		play();
+		
+	</script>
+</body>
+</html>
