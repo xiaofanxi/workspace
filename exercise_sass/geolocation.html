@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<h1>HTML5 Grlocation</h1>
+	<p id="status">HTML5 Gelocation is <strong>not</strong> supported in your browser.</p>
+	<h2>Current Position:</h2>
+	<table border="1">
+		<tr>
+			<td width="40" scope="col">Latitude</th>
+			<td width="114" id="latitude">?</td>
+		</tr>
+		<tr>
+			<td>Longitude</td>
+			<td id="longitude">?</td>
+		</tr>
+		<tr>
+			<td>Accuracy</td>
+			<td id="accuracy">?</td>
+		</tr>
+		<tr>
+			<td>Last Timestamp</td>
+			<td id="timestamp">?</td>
+		</tr>
+		<h4 id="currDist">Current distance traveled: 0.0 km</h4>
+		<h4 id="totalDist">TotalDist distance traveled: 0.0 km</h4>
+	</table>
+	<script>
+		//角度变弧度
+		function toRadians (degree) {
+			return degree * Math.PI /180;
+		}
+
+		//距离
+		function distance (latitude1,longitude1,latitude2,longitude2) {//纬度,经度
+			// R地球半径,以km为单位
+			var R = 6371;
+			var delLatitude = toRadians(latitude2 - latitude1);
+			var delLongitude = toRadians(longitude2 - longitude1);
+			latitude1 = toRadians(latitude1);
+			latitude2 = toRadians(latitude2);
+			var a = Math.sin(delLatitude/2) * Math.sin(delLongitude/2) + Math.cos(latitude1) * Math.cos(latitude2) * Math.sin(delLongitude/2) *Math.sin(delLongitude/2);
+			var c = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+			var d = R * c;
+			return d;
+		}
+
+		var totalDistance = 0.0;
+		var lastLat,lastLong;
+		function updateStatus (message) {
+			document.getElementById("status").innerHTML = message;
+		}
+
+		function loadDemo () {
+			if(navigator.geolocation)
+				updateStatus("HTML5 Geolocation is supported in your browser.");
+			navigator.geolocation.watchPosition(updateLocation,handleLocationError,{maxmunAge:20000});
+		}
+		
+
+		function handleLocationError(error) {
+			console.log(2);
+	        switch(error.code){
+		        case 0:
+		          	updateStatus("There was an error while retrieving your location: " + error.message);
+		          	break;
+		        case 1:
+		          	updateStatus("The user prevented this page from retrieving a location.");
+		          	break;
+		        case 2:
+		          	updateStatus("The browser was unable to determine your location: " + error.message);
+		          	break;
+		        case 3:
+		         	updateStatus("The browser timed out before retrieving the location.");
+		          	break;
+	        }
+	    }
+	    function updateLocation (position) {
+	    	console.log(1);
+	    	var latitude = position.coords.latitude;
+	    	var longitude = position.coords.longitude;
+	    	var accuracy = position.coords.accuracy;
+	    	var timestamp = position.coords.timestamp;
+	    	document.getElementById('latitude').innerHTML = latitude;
+	    	document.getElementById('longitude').innerHTML = longitude;
+	    	document.getElementById('accuracy').innerHTML = accuracy;
+	    	document.getElementById('timestamp').innerHTML = timestamp;
+	    	if (accuracy>500) {
+	    		updateStatus("Need more accurate values to calculate distance.");
+	    		return;
+	    	}
+	    	
+	        // calculate distance
+
+	        if ((lastLat != null) && (lastLong != null)) {
+	            var currentDistance = distance(latitude, longitude, lastLat, lastLong);
+	            document.getElementById("currDist").innerHTML =
+	              "Current distance traveled: " + currentDistance.toFixed(4) + " km";
+
+	            totalDistance += currentDistance;
+
+	            document.getElementById("totalDist").innerHTML =
+	              "Total distance traveled: " + currentDistance.toFixed(4) + " km";
+	        }
+
+
+	        lastLat = latitude;
+	        lastLong = longitude;
+
+	        updateStatus("Location successfully updated.");
+	    }
+	    window.addEventListener('load', loadDemo, false);
+	</script>
+</body>
+</html>
