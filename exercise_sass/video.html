@@ -4,21 +4,101 @@
 	<title></title>
 </head>
 <body>
-	<!-- <video id="movies" autoplay width="500px" height="300px">
+	<!-- <video id="movies" autoplay width="400px" height="300px">
 		<source url="video/小小的太阳.mp3"></video>
 	</video> -->
-	<video autobuffer autoloop loop controls>
-		<source src="/media/video.oga">
-		<source src="/media/video.m4v">
-		<object type="video/ogg" data="/media/video.oga" width="320" height="240">
-			<param name="src" value="/media/video.oga">
-			<param name="autoplay" value="false">
-			<param name="autoStart" value="0">
-			<p><a href="/media/video.oga">Download this video file.</a></p>
-		</object>
+	<video id="movies" autoplay controls oncanplay="startVideo()" onended="stopTimeline()" autobuffer="true" width="400px" height="300px">
+		<source src="video/video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+		<source src="video/video.ogv" type='video/ogg; codecs="theora, vorbis"'>
+	</video>
+	<canvas id='timeline' width="400px" height="300px" style="border:1px solid #abc"></canvas>
+
+	<video id="movies" onmouseover="this.play()" onmouseout="this.pause()" autobuffer="true" width="400px" height="300px" style="border:1px solid #abc">
+		<source src="video/video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+		<source src="video/video.ogv" type='video/ogg; codecs="theora, vorbis"'>
 	</video>
 	<script>
-		console.log(!!document.createElement("video").canPlayType);
+		
+			console.log(!!document.createElement("video").canPlayType);
+
+			//抓取帧的时间间隔,单位ms
+			var updateInterval = 300;
+
+			//时序中帧的尺寸
+			 var frameWidth = 100;
+			 var frameHeight = 75;
+
+			 //时序的总帧数
+			 var frameRows = 4;
+			 var frameColumns = 4;
+			 var frameGrid = frameRows * frameColumns;
+
+			 //当前帧
+			 var frameCount = 0;
+
+			 //播放完后取消计时器
+			 var intervalid;
+
+			 var videoStarted = false;
+
+			 function updateFrame () {
+			 	var video = document.getElementById("movies");
+			 	var timeline = document.getElementById("timeline");
+			 	var ctx = timeline.getContext("2d");
+
+			 	//跟据帧数计算出当前播放位置
+			 	//然后以视频为输入参数绘制图像
+			 	var framePosition = frameCount % frameGrid;
+			 	var frameX = (framePosition % frameColumns) * frameWidth;
+			 	var frameY = (Math.floor(framePosition / frameRows)) * frameHeight;
+			 	ctx.drawImage(video,0,0,400,300,frameX,frameY,frameWidth,frameHeight);
+			 	frameCount ++;
+			 }
+
+			 function startVideo () {
+			 	// debugger;
+			 	// 只在视频第一次播放时设置计时器;
+			 	if(videoStarted){
+			 		return;
+			 	}else{
+			 		videoStarted = true;
+
+			 		//计算初始帧,然后以规定时间间隔创建其他帧
+			 		updateFrame();
+			 		intervalid = setInterval(updateFrame, updateInterval);
+			 	}
+			 }
+
+			 var timeline = document.getElementById("timeline");
+			 timeline.onclick = function (evt) {
+			 	var offX = evt.layerX - timeline.offsetLeft;
+			 	var offY = evt.layerY - timeline.offsetTop;
+
+			 	//计算以零为基准索引的网格中哪帧被单击
+			 	var clickedFrame = Math.floor(offY / frameHeight) * frameRows;
+			 	clickedFrame += Math.floor(offX / frameWidth);
+
+			 	//视频开始后已经播放多少帧
+			 	var seekedFrame = (((Math.floor(frameCount /frameGrid))*frameGrid)+clickedFrame);
+
+			 	//如果单击的帧在当前帧之前,则假定是上一轮的帧
+			 	if(clickedFrame > (frameCount % 16))
+			 		seekedFrame -= frameGrid;
+
+				 	//不允许跳出当前视频
+				 	if(seekedFrame<0)
+				 		return;
+				//计算出这一帧对应的视频
+				var video = document.getElementById("movies");
+				video.currentTime = seekedFrame * updateInterval / 1000;
+
+				//设置目标帧
+				frameCount = seekedFrame;
+			 }
+
+			 function stopTimeline (argument) {
+			 	clearInterval(intervalid);
+			 }
 	</script>
 </body>
 </html>
