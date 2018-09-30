@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>1、canvas刮刮卡</title>
+	<meta name="keywords" content=""/>
+	<meta name="description" content=""/>
+	<style type="text/css"></style>
+</head>
+<body>
+	<canvas id="canvas" width="400" height="400"></canvas>
+
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas'),
+			c = canvas.getContext('2d');
+
+		c.save();
+		c.beginPath();
+		c.fillStyle = 'gray';
+		c.fillRect(0,0,400,400);
+		c.restore();
+
+		canvas.onmousedown = function(e){
+			e = e || window.event;
+			var x = e.clientX - this.offsetLeft;
+			var y = e.clientY - this.offsetTop;
+			// console.log(x,y);
+			c.moveTo(x,y);
+			
+			canvas.onmousemove = function(e){
+				e = e || window.event;
+				var nx = e.clientX - this.offsetLeft;
+				var ny = e.clientY - this.offsetTop;
+				c.save();
+				c.beginPath();
+				c.lineWidth = 10;
+				c.globalCompositeOperation = 'destination-out';
+				// c.arc(nx,ny,10,0,Math.PI*2,true);
+				console.log(nx,ny);
+				c.lineTo(nx,ny);
+				c.moveTo(nx,ny);
+				c.closePath();
+				c.stroke();
+				c.restore();
+			}
+
+			canvas.onmouseup = function(){
+				this.onmousemove = null;
+				this.onmouseup = null;
+			}
+		}
+
+	</script>
+</body>
+</html>
