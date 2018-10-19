@@ -7,22 +7,30 @@
 	<link rel="stylesheet" href="">
 </head>
 <body>
-	<label for="age">Age</label>
-	<input type="range" id="age" min="18" max="120" value="18" onchange="showValue(this.value)" />
-	<span id="ageDisplay">18</span>
-	<input type="number" id="number" onchange="showValue(this.value)" />
-	<span id="getNumber"></span>
-	<input type="color" id="color" onchange="showValue(this.value)" />
-	<span id="getColor"></span>
-	<input type="datetime" id="datetime" >
-	<input type="datetime-local" id="datetime_local">
-	<input type="time" id="time">
-	<input type="date" id="date">
-	<input type="week" id="week">
-	<input type="month" id="month">
-	<label>Runner: <input name="name" placeholder="First and last name" required></label>
-	<input type="text" name="creditcard" autocomplete="on">
-	<input type="search" id="search" autofocus="true">
+	<form action="get" id="myForm" name="myForm">
+		<label for="age">Age</label>
+		<input type="range" id="age" min="18" max="120" value="18" onchange="showValue(this.value)" />
+		<span id="ageDisplay">18</span>
+		<input type="number" id="number" onchange="showValue(this.value)" />
+		<span id="getNumber"></span>
+		<input type="color" id="color" onchange="showValue(this.value)" />
+		<span id="getColor"></span>
+		<input type="datetime" id="datetime" >
+		<input type="datetime-local" id="datetime_local">
+		<input type="time" id="time">
+		<input type="date" id="date">
+		<input type="week" id="week">
+		<input type="month" id="month">
+		<label>Runner: <input name="name" placeholder="First and last name" required></label>
+		<input type="text" name="creditcard" autocomplete="on">
+		<input type="search" id="search" autofocus="true">
+		<datalist id="contactList">
+			<option value="x@example.com" label="Racer X"></option>
+			<option value="peter@example.com" label="Peter"></option>
+		</datalist>
+		<input type="exmail" id="contacts" list="contactList">
+		<input type="range" id="confidence" name="level" min="0" max="100" step="5" value="0">
+	v</form>
 	<script>
 		showValue = function (value) {
 			document.getElementById("ageDisplay").innerHTML = value;
